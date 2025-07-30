@@ -1,5 +1,6 @@
-package med.voll.api.domain.usuario;
+package com.alura.challenge.forohub.service;
 
+import com.alura.challenge.forohub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,6 @@ public class AutenticacionService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByLogin(username);
+        return repository.findByEmail(username);
     }
 }

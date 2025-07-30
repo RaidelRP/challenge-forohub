@@ -1,4 +1,4 @@
-package com.alura.challenge.forohub.entity;
+package com.alura.challenge.forohub.entity.topico;
 
 public enum Estado {
     CREADO,

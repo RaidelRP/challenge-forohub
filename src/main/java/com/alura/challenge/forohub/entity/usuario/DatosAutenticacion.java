@@ -1,4 +1,4 @@
 package com.alura.challenge.forohub.entity.usuario;
 
-public record DatosAutenticacion() {
+public record DatosAutenticacion(String email, String contrasena) {
 }

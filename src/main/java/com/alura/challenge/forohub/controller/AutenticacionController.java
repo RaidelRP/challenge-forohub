@@ -1,10 +1,10 @@
-package med.voll.api.controller;
+package com.alura.challenge.forohub.controller;
 
+import com.alura.challenge.forohub.entity.usuario.DatosAutenticacion;
+import com.alura.challenge.forohub.entity.usuario.Usuario;
+import com.alura.challenge.forohub.infra.security.DatosTokenJWT;
+import com.alura.challenge.forohub.infra.security.TokenService;
 import jakarta.validation.Valid;
-import med.voll.api.domain.usuario.DatosAutenticacion;
-import med.voll.api.domain.usuario.Usuario;
-import med.voll.api.infra.security.DatosTokenJWT;
-import med.voll.api.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,13 +24,16 @@ public class AutenticacionController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping
+
+    @PostMapping("")
     public ResponseEntity iniciarSesion(@RequestBody @Valid DatosAutenticacion datos) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(datos.login(), datos.contrasena());
+        var authenticationToken = new UsernamePasswordAuthenticationToken(datos.email(), datos.contrasena());
         var autenticacion = manager.authenticate(authenticationToken);
 
         var tokenJWT = tokenService.generarToken((Usuario) autenticacion.getPrincipal());
 
         return ResponseEntity.ok(new DatosTokenJWT(tokenJWT));
     }
+
+
 }

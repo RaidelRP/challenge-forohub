@@ -1,5 +1,6 @@
-package com.alura.challenge.forohub.entity;
+package com.alura.challenge.forohub.entity.topico;
 
+import com.alura.challenge.forohub.entity.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

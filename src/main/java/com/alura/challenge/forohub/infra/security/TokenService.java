@@ -1,10 +1,10 @@
-package med.voll.api.infra.security;
+package com.alura.challenge.forohub.infra.security;
 
+import com.alura.challenge.forohub.entity.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import med.voll.api.domain.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("API voll.med")
-                    .withSubject(usuario.getLogin())
+                    .withIssuer("API Foro Hub")
+                    .withSubject(usuario.getEmail())
                     .withExpiresAt(fechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -40,7 +40,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("API voll.med")
+                    .withIssuer("API Foro Hub")
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
