@@ -25,5 +25,7 @@ public class Topico {
     @Enumerated(EnumType.STRING)
     private Estado status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_autor")
     private Usuario autor;
 }
