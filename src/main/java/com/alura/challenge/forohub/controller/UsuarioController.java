@@ -34,4 +34,10 @@ public class UsuarioController {
         var page = repository.findAll(paginacion).map(DatosDetalleUsuario::new);
         return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detallar(@PathVariable Long id) {
+        var usuario = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DatosDetalleUsuario(usuario));
+    }
 }

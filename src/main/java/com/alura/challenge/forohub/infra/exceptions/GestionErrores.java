@@ -1,6 +1,7 @@
 package com.alura.challenge.forohub.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -13,8 +14,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @RestControllerAdvice
 public class GestionErrores {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity gestionarError404() {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity gestionarError404(EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
