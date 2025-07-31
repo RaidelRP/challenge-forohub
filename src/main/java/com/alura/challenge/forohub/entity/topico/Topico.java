@@ -19,7 +19,7 @@ public class Topico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Boolean titulo;
+    private String titulo;
     private String mensaje;
     private LocalDateTime fechaCreacion;
 
