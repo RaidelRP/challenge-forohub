@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -26,7 +27,7 @@ public class TokenService {
                     .withExpiresAt(fechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Error al generar token JWT", exception);
+            throw new AccessDeniedException("Error al generar token JWT: " + exception.getMessage());
         }
     }
 
@@ -45,7 +46,7 @@ public class TokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token JWT invalido o expirado");
+            throw new AccessDeniedException("Token JWT invalido o expirado: " + exception.getMessage());
         }
     }
 }

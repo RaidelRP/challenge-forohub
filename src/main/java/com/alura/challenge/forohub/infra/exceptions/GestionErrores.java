@@ -2,6 +2,7 @@ package com.alura.challenge.forohub.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,12 @@ public class GestionErrores {
         var errores = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(errores.stream().map(DatosErrorValidacion::new).toList());
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity gestionarError403(AccessDeniedException ex) {
+        return ResponseEntity.status(403).body(ex.getMessage());
+    }
+
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity gestionarErrorIntegrityConstraintViolation(SQLIntegrityConstraintViolationException e) {

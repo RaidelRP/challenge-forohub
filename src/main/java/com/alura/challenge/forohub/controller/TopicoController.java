@@ -6,12 +6,12 @@ import com.alura.challenge.forohub.entity.topico.TopicoService;
 import com.alura.challenge.forohub.repository.TopicoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -32,5 +32,9 @@ public class TopicoController {
         return ResponseEntity.created(uri).body(new DatosDetalleTopico(topico));
     }
 
-
+    @GetMapping
+    public ResponseEntity<Page<DatosDetalleTopico>> listar(@PageableDefault(size = 10, sort = {"nombre"}) Pageable paginacion) {
+        var page = repository.findAll(paginacion).map(DatosDetalleTopico::new);
+        return ResponseEntity.ok(page);
+    }
 }
