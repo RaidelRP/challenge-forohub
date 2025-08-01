@@ -2,8 +2,7 @@ package com.alura.challenge.forohub.controller;
 
 import com.alura.challenge.forohub.entity.usuario.DatosDetalleUsuario;
 import com.alura.challenge.forohub.entity.usuario.DatosRegistroUsuario;
-import com.alura.challenge.forohub.entity.usuario.Usuario;
-import com.alura.challenge.forohub.repository.UsuarioRepository;
+import com.alura.challenge.forohub.entity.usuario.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,27 +16,36 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
+//    @Autowired
+//    private UsuarioRepository repository;
+
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioService usuarioService;
 
     @Transactional
     @PostMapping("/registrar")
     public ResponseEntity registrar(@RequestBody @Valid DatosRegistroUsuario datos, UriComponentsBuilder builder) {
-        var usuario = new Usuario(datos);
-        repository.save(usuario);
+        var usuario = usuarioService.crearUsuario(datos);
         var uri = builder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DatosDetalleUsuario(usuario));
     }
 
     @GetMapping
     public ResponseEntity<Page<DatosDetalleUsuario>> listar(@PageableDefault(size = 10, sort = {"nombre"}) Pageable paginacion) {
-        var page = repository.findAll(paginacion).map(DatosDetalleUsuario::new);
+        var page = usuarioService.listarUsuarios(paginacion);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity detallar(@PathVariable Long id) {
-        var usuario = repository.getReferenceById(id);
+        var usuario = usuarioService.detalleUsuario(id);
         return ResponseEntity.ok(new DatosDetalleUsuario(usuario));
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminar(@PathVariable Long id) {
+        usuarioService.eliminarUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 }
