@@ -1,5 +1,6 @@
 package com.alura.challenge.forohub.entity.topico;
 
+import com.alura.challenge.forohub.entity.usuario.Usuario;
 import com.alura.challenge.forohub.infra.exceptions.ValidacionException;
 import com.alura.challenge.forohub.repository.TopicoRepository;
 import com.alura.challenge.forohub.repository.UsuarioRepository;
@@ -17,13 +18,18 @@ public class TopicoService {
     private UsuarioRepository usuarioRepository;
 
     public Topico crearTopico(DatosRegistroTopico datos) {
-        if (datos.idAutor() != null && !usuarioRepository.existsById(datos.idAutor()))
-            throw new ValidacionException("El usuario no existe");
-
-        var autor = usuarioRepository.findById(datos.idAutor()).get();
+        var autor = getAutor(datos.idAutor());
         var topico = new Topico(null, datos.titulo(), datos.mensaje(), datos.fechaCreacion(), datos.status(), autor);
         topicoRepository.save(topico);
         return topico;
+    }
+
+    private Usuario getAutor(Long idAutor) {
+        if (idAutor != null && !usuarioRepository.existsById(idAutor))
+            throw new ValidacionException("El usuario no existe");
+
+        var autor = usuarioRepository.findById(idAutor).get();
+        return autor;
     }
 
     public void eliminarTopico(Long id) {
@@ -41,5 +47,27 @@ public class TopicoService {
 
     public Page<DatosDetalleTopico> listar(Pageable paginacion) {
         return topicoRepository.findAll(paginacion).map(DatosDetalleTopico::new);
+    }
+
+    public Topico actualizarTopico(DatosActualizacionTopico datos) {
+        var topico = topicoRepository.getReferenceById(datos.id());
+        actualizarInformacion(topico, datos);
+        topicoRepository.save(topico);
+        return topico;
+    }
+
+    private void actualizarInformacion(Topico topico, DatosActualizacionTopico datos) {
+        if (datos.titulo() != null)
+            topico.setTitulo(datos.titulo());
+        if (datos.mensaje() != null)
+            topico.setMensaje(datos.mensaje());
+        if (datos.fechaCreacion() != null)
+            topico.setFechaCreacion(datos.fechaCreacion());
+        if (datos.status() != null)
+            topico.setStatus(datos.status());
+        if (datos.idAutor() != null) {
+            var autor = getAutor(datos.idAutor());
+            topico.setAutor(autor);
+        }
     }
 }

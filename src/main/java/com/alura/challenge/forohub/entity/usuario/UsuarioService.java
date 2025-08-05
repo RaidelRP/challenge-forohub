@@ -35,4 +35,18 @@ public class UsuarioService {
     public Usuario detalleUsuario(Long id) {
         return usuarioRepository.getReferenceById(id);
     }
+
+    public Usuario actualizarUsuario(DatosActualizacionUsuario datos) {
+        var usuario = usuarioRepository.getReferenceById(datos.id());
+        actualizarInformacion(usuario, datos);
+        usuarioRepository.save(usuario);
+        return usuario;
+    }
+
+    private void actualizarInformacion(Usuario usuario, DatosActualizacionUsuario datos) {
+        if (datos.nombre() != null)
+            usuario.setNombre(datos.nombre());
+        if (datos.email() != null)
+            usuario.setEmail(datos.email());
+    }
 }

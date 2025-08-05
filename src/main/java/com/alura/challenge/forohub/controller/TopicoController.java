@@ -1,5 +1,6 @@
 package com.alura.challenge.forohub.controller;
 
+import com.alura.challenge.forohub.entity.topico.DatosActualizacionTopico;
 import com.alura.challenge.forohub.entity.topico.DatosDetalleTopico;
 import com.alura.challenge.forohub.entity.topico.DatosRegistroTopico;
 import com.alura.challenge.forohub.entity.topico.TopicoService;
@@ -47,5 +48,12 @@ public class TopicoController {
     public ResponseEntity eliminar(@PathVariable Long id) {
         topicoService.eliminarTopico(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity actualizar(@RequestBody @Valid DatosActualizacionTopico datos) {
+        var topico = topicoService.actualizarTopico(datos);
+        return ResponseEntity.ok(new DatosDetalleTopico(topico));
     }
 }
