@@ -1,10 +1,12 @@
 package com.alura.challenge.forohub.entity.usuario;
 
+import com.alura.challenge.forohub.controller.DatosActualizacionUsuarioContrasena;
 import com.alura.challenge.forohub.repository.TopicoRepository;
 import com.alura.challenge.forohub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +26,7 @@ public class UsuarioService {
     public void eliminarUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
         var topicos = topicoRepository.findAllByIdAutor(id);
-        topicos.stream().forEach(topico -> topicoRepository.delete(topico));
+        topicos.forEach(topico -> topicoRepository.delete(topico));
         usuarioRepository.delete(usuario);
     }
 
@@ -41,6 +43,19 @@ public class UsuarioService {
         actualizarInformacion(usuario, datos);
         usuarioRepository.save(usuario);
         return usuario;
+    }
+
+    public Usuario actualizarContrasenaUsuario(DatosActualizacionUsuarioContrasena datos) {
+        var usuario = usuarioRepository.getReferenceById(datos.id());
+        actualizarContrasena(usuario, datos);
+        usuarioRepository.save(usuario);
+        return usuario;
+    }
+
+    private void actualizarContrasena(Usuario usuario, DatosActualizacionUsuarioContrasena datos) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String contrasenaEncriptada = encoder.encode(datos.contrasena());
+        usuario.setContrasena(contrasenaEncriptada);
     }
 
     private void actualizarInformacion(Usuario usuario, DatosActualizacionUsuario datos) {

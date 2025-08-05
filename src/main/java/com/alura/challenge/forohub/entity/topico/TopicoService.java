@@ -56,6 +56,14 @@ public class TopicoService {
         return topico;
     }
 
+    public Topico actualizarEstado(DatosActualizacionEstadoTopico datos) {
+        var topico = topicoRepository.getReferenceById(datos.id());
+        if (datos.status() != null)
+            topico.setStatus(datos.status());
+        topicoRepository.save(topico);
+        return topico;
+    }
+
     private void actualizarInformacion(Topico topico, DatosActualizacionTopico datos) {
         if (datos.titulo() != null)
             topico.setTitulo(datos.titulo());

@@ -1,9 +1,6 @@
 package com.alura.challenge.forohub.controller;
 
-import com.alura.challenge.forohub.entity.topico.DatosActualizacionTopico;
-import com.alura.challenge.forohub.entity.topico.DatosDetalleTopico;
-import com.alura.challenge.forohub.entity.topico.DatosRegistroTopico;
-import com.alura.challenge.forohub.entity.topico.TopicoService;
+import com.alura.challenge.forohub.entity.topico.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/topicos")
 public class TopicoController {
-//    @Autowired
-//    private TopicoRepository repository;
-
     @Autowired
     private TopicoService topicoService;
 
@@ -54,6 +48,13 @@ public class TopicoController {
     @PutMapping
     public ResponseEntity actualizar(@RequestBody @Valid DatosActualizacionTopico datos) {
         var topico = topicoService.actualizarTopico(datos);
+        return ResponseEntity.ok(new DatosDetalleTopico(topico));
+    }
+
+    @Transactional
+    @PutMapping("/estado")
+    public ResponseEntity cambiarEstado(@RequestBody @Valid DatosActualizacionEstadoTopico datos) {
+        var topico = topicoService.actualizarEstado(datos);
         return ResponseEntity.ok(new DatosDetalleTopico(topico));
     }
 }

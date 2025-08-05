@@ -17,9 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-//    @Autowired
-//    private UsuarioRepository repository;
-
     @Autowired
     private UsuarioService usuarioService;
 
@@ -55,5 +52,12 @@ public class UsuarioController {
     public ResponseEntity actualizar(@RequestBody @Valid DatosActualizacionUsuario datos) {
         var usuario = usuarioService.actualizarUsuario(datos);
         return ResponseEntity.ok(new DatosDetalleUsuario(usuario));
+    }
+
+    @Transactional
+    @PutMapping("/contrasena")
+    public ResponseEntity cambiarContrasena(@RequestBody @Valid DatosActualizacionUsuarioContrasena datos) {
+        var usuario = usuarioService.actualizarContrasenaUsuario(datos);
+        return ResponseEntity.noContent().build();
     }
 }
