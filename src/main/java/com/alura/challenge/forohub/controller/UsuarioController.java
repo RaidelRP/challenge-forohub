@@ -1,9 +1,6 @@
 package com.alura.challenge.forohub.controller;
 
-import com.alura.challenge.forohub.entity.usuario.DatosActualizacionUsuario;
-import com.alura.challenge.forohub.entity.usuario.DatosDetalleUsuario;
-import com.alura.challenge.forohub.entity.usuario.DatosRegistroUsuario;
-import com.alura.challenge.forohub.entity.usuario.UsuarioService;
+import com.alura.challenge.forohub.entity.usuario.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

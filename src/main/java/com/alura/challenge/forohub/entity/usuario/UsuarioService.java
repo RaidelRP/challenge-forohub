@@ -1,6 +1,5 @@
 package com.alura.challenge.forohub.entity.usuario;
 
-import com.alura.challenge.forohub.controller.DatosActualizacionUsuarioContrasena;
 import com.alura.challenge.forohub.repository.TopicoRepository;
 import com.alura.challenge.forohub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

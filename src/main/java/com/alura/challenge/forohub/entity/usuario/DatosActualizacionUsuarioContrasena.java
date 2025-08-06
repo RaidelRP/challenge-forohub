@@ -1,4 +1,4 @@
-package com.alura.challenge.forohub.controller;
+package com.alura.challenge.forohub.entity.usuario;
 
 import jakarta.validation.constraints.NotNull;
 
